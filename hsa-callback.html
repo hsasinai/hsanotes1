@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HSA Notes — Callback</title>
+  <style>
+    body { font-family: 'Segoe UI', Arial, sans-serif; text-align: center; padding: 48px; color: #2E3A59; background: #f4f6fb; }
+    h2 { margin: 0 0 12px; }
+    p { color: #5b6b8c; }
+  </style>
+</head>
+<body>
+  <h2>HSA Notes</h2>
+  <p>تم الاتصال — يمكنك العودة إلى التطبيق.</p>
+  <p>Connected — you can close this tab and return to the app.</p>
+  <script>
+    (function () {
+      var params = new URLSearchParams(location.search);
+      var msg = {
+        type: 'hsa-oauth',
+        state: params.get('state') || null,
+        code: params.get('code') || null,
+        error: params.get('error') || null
+      };
+      try {
+        if (window.opener) window.opener.postMessage(msg, '*');
+      } catch (e) { /* ignore */ }
+      setTimeout(function () {
+        if (window.opener) window.close();
+        else document.body.innerHTML = '<h2>HSA Notes</h2><p>You can close this tab.</p>';
+      }, 1500);
+    })();
+  </script>
+</body>
+</html>
